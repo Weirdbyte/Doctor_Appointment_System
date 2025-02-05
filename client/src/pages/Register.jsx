@@ -1,11 +1,22 @@
-import React from 'react'
-import "../styles/RegisterStyles.css"
-import {Form, Input} from 'antd'
+import '../styles/RegisterStyles.css';
+
+import React from 'react';
+
+import {
+  Form,
+  Input,
+  message,
+} from 'antd';
 
 const Register = () => {
 
   const onfinishHandler = (values) => {
-    console.log(values);
+    try {
+      
+    } catch (error) {
+      console.log(error);
+      message.error('Something went wrong');
+    }
   }
 
   return (
@@ -31,7 +42,7 @@ const Register = () => {
               <p className="text-center mt-4">
                 Already have an account?{' '}
                 <a href="/login" className="text-blue-500 hover:underline">
-                  Log in
+                  Log in 
                 </a>
               </p>
 
