@@ -1,11 +1,42 @@
-import React from 'react'
-import "../styles/LoginStyles.css"
-import {Form, Input} from 'antd'
+import '../styles/LoginStyles.css';
+
+import React from 'react';
+
+import {
+  Form,
+  Input,
+  message,
+} from 'antd';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-
-  const onfinishHandler = (values) => {
-    console.log(values);
+  const navigate = useNavigate();
+  const onfinishHandler = async (values) => {
+    try {
+      const res = await axios.post('http://localhost:8080/api/v1/user/login',values);
+      if(res.data.success){
+        localStorage.setItem("token", res.data.token);
+        message.success("Login successfully");
+        navigate('/');
+      }else{
+        message.error(res.data.message);
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      if (error.response) {
+        console.error('Error response data:', error.response.data);
+        console.error('Error response status:', error.response.status);
+        console.error('Error response headers:', error.response.headers);
+        message.error(error.response.data.message || 'Something went wrong');
+      } else if (error.request) {
+        console.error('Error request:', error.request);
+        message.error('No response received from server');
+      } else {
+        console.error('Error message:', error.message);
+        message.error('Error in setting up request');
+      }
+    }
   }
 
   return (
@@ -34,7 +65,7 @@ const Login = () => {
           </Form>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

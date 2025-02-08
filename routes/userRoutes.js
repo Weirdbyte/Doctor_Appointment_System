@@ -6,8 +6,11 @@ const router = express.Router();
 
 //routes----
 //LOGIN | POST
+
 router.post("/login" , loginController);
 
 //register | POST
 
 router.post("/register" , registerController);
+
+module.exports = router;

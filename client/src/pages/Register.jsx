@@ -7,18 +7,29 @@ import {
   Input,
   message,
 } from 'antd';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
+// console.log(axios.isCancel('something'));
 
 const Register = () => {
-
-  const onfinishHandler = (values) => {
+  const navigate = useNavigate();
+  const onfinishHandler = async (values) => {
     try {
-      
+      const res = await axios.post('http://localhost:8080/api/v1/user/register', values);
+      if (res.data.success) {
+        message.success('Registration successful');
+        navigate('/login');
+      } else {
+        message.error(res.data.message);
+      }
     } catch (error) {
-      console.log(error);
+      console.error('Registration error:', error);
       message.error('Something went wrong');
     }
-  }
+  };
 
+  
   return (
     <> 
 
