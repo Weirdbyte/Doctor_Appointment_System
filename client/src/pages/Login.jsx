@@ -1,20 +1,19 @@
 import '../styles/LoginStyles.css';
-
 import React from 'react';
-
-import {
-  Form,
-  Input,
-  message,
-} from 'antd';
+import {Form,Input,message} from 'antd';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { showloading,hideloading } from '../redux/features/alertSlice';
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const onfinishHandler = async (values) => {
     try {
+      dispatch(showloading());
       const res = await axios.post('http://localhost:8080/api/v1/user/login',values);
+      dispatch(hideloading());
       if(res.data.success){
         localStorage.setItem("token", res.data.token);
         message.success("Login successfully");
@@ -23,6 +22,7 @@ const Login = () => {
         message.error(res.data.message);
       }
     } catch (error) {
+      dispatch(hideloading());
       console.error('Login error:', error);
       if (error.response) {
         console.error('Error response data:', error.response.data);
